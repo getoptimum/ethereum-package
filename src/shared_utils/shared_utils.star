@@ -49,12 +49,14 @@ def new_port_spec(
             number=number,
             transport_protocol=transport_protocol,
             application_protocol=application_protocol,
+            wait=None
         )
 
     return PortSpec(
         number=number,
         transport_protocol=transport_protocol,
         application_protocol=application_protocol,
+        wait=None
         # wait=wait, # disable port checkup anyway
     )
 
