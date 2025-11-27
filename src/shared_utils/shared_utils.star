@@ -55,7 +55,7 @@ def new_port_spec(
         number=number,
         transport_protocol=transport_protocol,
         application_protocol=application_protocol,
-        wait=wait,
+        # wait=wait, # disable port checkup anyway
     )
 
 
