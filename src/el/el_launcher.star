@@ -13,6 +13,7 @@ reth = import_module("./reth/reth_launcher.star")
 ethereumjs = import_module("./ethereumjs/ethereumjs_launcher.star")
 nimbus_eth1 = import_module("./nimbus-eth1/nimbus_launcher.star")
 ethrex = import_module("./ethrex/ethrex_launcher.star")
+dummy = import_module("./dummy/dummy_launcher.star")
 
 
 def launch(
@@ -31,6 +32,7 @@ def launch(
     mev_builder_type,
     mev_params,
     extra_files_artifacts={},
+    bootnodoor_enode=None,
 ):
     el_launchers = {
         constants.EL_TYPE.geth: {
@@ -118,12 +120,29 @@ def launch(
             "get_el_context": ethrex.get_el_context,
             "launch_method": ethrex.launch,
         },
+        constants.EL_TYPE.dummy: {
+            "launcher": dummy.new_dummy_launcher(
+                el_cl_data,
+                jwt_file,
+            ),
+            "launch_method": dummy.launch,
+            "get_config": dummy.get_config,
+            "get_el_context": dummy.get_el_context,
+        },
     }
 
     all_el_contexts = []
     network_name = shared_utils.get_network_name(network_params.network)
     el_service_configs = {}
     el_participant_info = {}
+
+    # Generic bootnode ENODE override - can be set from bootnodoor or any other bootnode service
+    if bootnodoor_enode != None:
+        plan.print(
+            "Using bootnode ENODE override for all EL clients: {0}".format(
+                bootnodoor_enode
+            )
+        )
 
     for index, participant in enumerate(participants):
         cl_type = participant.cl_type
@@ -171,6 +190,7 @@ def launch(
                 index,
                 network_params,
                 extra_files_artifacts,
+                bootnodoor_enode,
             )
 
             # Add participant el additional prometheus metrics
@@ -195,6 +215,7 @@ def launch(
                 index,
                 network_params,
                 extra_files_artifacts,
+                bootnodoor_enode,
             )
 
             el_participant_info[el_service_name] = {

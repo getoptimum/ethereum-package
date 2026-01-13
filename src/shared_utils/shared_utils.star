@@ -49,15 +49,13 @@ def new_port_spec(
             number=number,
             transport_protocol=transport_protocol,
             application_protocol=application_protocol,
-            wait=None
         )
 
     return PortSpec(
         number=number,
         transport_protocol=transport_protocol,
         application_protocol=application_protocol,
-        wait=None
-        # wait=wait, # disable port checkup anyway
+        wait=wait,
     )
 
 
@@ -281,7 +279,7 @@ def __get_port_range(port_start, max_ports_per_component, participant_index):
     return (public_port_start, public_port_end)
 
 
-def get_port_specs(port_assignments):
+def get_port_specs(port_assignments, wait=NOT_PROVIDED_WAIT):
     ports = {}
     for port_id, port in port_assignments.items():
         if port_id in [
@@ -314,7 +312,7 @@ def get_port_specs(port_assignments):
             constants.METRICS_PORT_ID,
             constants.VALIDATOR_HTTP_PORT_ID,
             constants.ADMIN_PORT_ID,
-            constants.VALDIATOR_GRPC_PORT_ID,
+            constants.VALIDATOR_GRPC_PORT_ID,
             constants.RBUILDER_PORT_ID,
             constants.RBUILDER_METRICS_PORT_ID,
         ]:

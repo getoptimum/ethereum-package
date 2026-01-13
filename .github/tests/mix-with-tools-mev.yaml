@@ -15,10 +15,10 @@ additional_services:
   - tx_fuzz
   - forkmon
   - dora
+  - checkpointz
   - prometheus
   - grafana
   - custom_flood
-  - blobscan
   - blockscout
   - dugtrio
   - erpc
